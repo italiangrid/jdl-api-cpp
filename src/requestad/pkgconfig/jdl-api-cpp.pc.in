@@ -1,0 +1,12 @@
+prefix=@CMAKE_INSTALL_PREFIX@/usr
+exec_prefix=@CMAKE_INSTALL_PREFIX@/usr
+libdir=@CMAKE_INSTALL_PREFIX@/usr/lib
+includedir=@CMAKE_INSTALL_PREFIX@/usr/include
+
+Name: jdl api
+Description: JDL C/C++ APIs
+Version: @PVER@
+#Requires: classad-utils, jobman-exception
+Libs: -L${libdir} -lglite_jdl_api_cpp
+Cflags: -I${includedir}
+

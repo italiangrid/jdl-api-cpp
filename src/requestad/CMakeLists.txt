@@ -60,7 +60,7 @@ link_directories(${GLITE_WMSUTILS_EXCEPTION_LIBRARY_DIRS}
                  ${Boost_INCLUDE_DIRS})
 
 install(TARGETS glite_jdl_api_cpp
-        LIBRARY DESTINATION usr/lib)
+        LIBRARY DESTINATION usr/${LIBSUBDIR})
 
 
 add_subdirectory(pkgconfig)

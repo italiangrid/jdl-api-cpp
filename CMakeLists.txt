@@ -25,6 +25,10 @@ if(NOT DEFINED PVER)
     set(PVER "9.9.9")
 endif(NOT DEFINED PVER)
 
+set(ENV{PKG_CONFIG_PATH}
+"${CMAKE_INSTALL_PREFIX}/usr/lib/pkgconfig/:${CMAKE_INSTALL_PREFIX}/usr/lib64/pkgconfig/:$ENV{PKG_CONFIG_PATH}")
+
+
 add_subdirectory(src)
 add_subdirectory(interface)
 

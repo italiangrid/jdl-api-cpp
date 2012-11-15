@@ -1,7 +1,7 @@
-prefix=@CMAKE_INSTALL_PREFIX@/usr
-exec_prefix=@CMAKE_INSTALL_PREFIX@/usr
-libdir=@CMAKE_INSTALL_PREFIX@/usr/lib
-includedir=@CMAKE_INSTALL_PREFIX@/usr/include
+prefix=@prefix@
+exec_prefix=${prefix}
+libdir=${prefix}/@LIBSUBDIR@
+includedir=${prefix}/include
 
 Name: jdl api
 Description: JDL C/C++ APIs

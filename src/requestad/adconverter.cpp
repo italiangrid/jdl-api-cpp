@@ -867,7 +867,7 @@ ExpDagAd* AdConverter::bulk2dag (Ad* adOriginal, unsigned int maxCycles_i){
 	// maxCycles_i determine how many parameters can be evaluated
 	// 0 means ALL
 	if (maxCycles_i==0){ maxCycles_i=iters.size();}
-	for ( unsigned int i = start;i < maxCycles_i;i+=step){
+	for ( unsigned int i = start;i <= maxCycles_i;i+=step){
 		// Generate the node by replacing parameter
 		try {
 			node = parse_classad(replace(buffer,VALUE,iters[i]));

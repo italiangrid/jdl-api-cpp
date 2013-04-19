@@ -1,0 +1,90 @@
+Summary: C/C++ libraries handling Job Description Language
+Name: glite-jdl-api-cpp
+Version: @PKGVERSION@
+Release: @PKGRELEASE@
+License: Apache Software License
+Vendor: EMI
+URL: http://glite.cern.ch/
+Group: System Environment/Libraries
+BuildArch: %{_arch}
+BuildRequires: cmake, emi-pkgconfig-compat
+BuildRequires: glite-wms-utils-exception-devel, boost-devel
+BuildRequires: glite-wms-utils-classad-devel, classads-devel
+BuildRequires: glite-jobid-api-c-devel, doxygen
+BuildRequires: glite-jobid-api-cpp-devel, pkgconfig
+BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+AutoReqProv: yes
+Source: %{name}.tar.gz
+
+%global debug_package %{nil}
+
+%description
+C/C++ libraries and utilities for dealing with the Job Description Language
+
+%prep
+ 
+
+%setup -c -q
+
+%build
+cmake -DCMAKE_INSTALL_PREFIX:string=%{buildroot} %{_builddir}/%{name}-%{version}
+make
+
+%install
+rm -rf %{buildroot}
+mkdir -p %{buildroot}
+make install
+sed 's|^prefix=.*|prefix=/usr|g' %{buildroot}%{_libdir}/pkgconfig/jdl-api-cpp.pc > %{buildroot}%{_libdir}/pkgconfig/jdl-api-cpp.pc.new
+mv %{buildroot}%{_libdir}/pkgconfig/jdl-api-cpp.pc.new %{buildroot}%{_libdir}/pkgconfig/jdl-api-cpp.pc
+
+%clean
+rm -rf %{buildroot}
+
+%post -p /sbin/ldconfig
+
+%postun -p /sbin/ldconfig
+ 
+
+%files
+%defattr(-,root,root)
+%{_libdir}/libglite_jdl_api_cpp.so.0
+%{_libdir}/libglite_jdl_api_cpp.so.0.0.0
+
+
+%package devel
+Summary: C/C++ libraries handling Job Description Language (development files)
+Group: System Environment/Libraries
+Requires: glite-jobid-api-c-devel, glite-jobid-api-cpp-devel
+Requires: glite-wms-utils-classad-devel, glite-wms-utils-exception-devel
+Requires: boost-devel, classads-devel
+Requires: %{name}%{?_isa} = %{version}-%{release}
+
+%description devel
+Development files for dealing with the Job Description Language
+
+%files devel
+%defattr(-,root,root)
+%dir /usr/include/glite/
+%dir /usr/include/glite/jdl/
+/usr/include/glite/jdl/*.h
+%{_libdir}/pkgconfig/jdl-api-cpp.pc
+%{_libdir}/libglite_jdl_api_cpp.so
+
+%package doc
+Summary: Documentation files for Job Description Language C/C++ library
+Group: Documentation
+
+%description doc
+Documentation files for C/C++ implementation of Job Description Language
+
+%files doc
+%defattr(-,root,root)
+%dir %{_docdir}/%{name}/html
+%doc %{_docdir}/%{name}/html/*
+
+%changelog
+* Fri Aug 31 2012 CREAM group <cream-support@lists.infn.it> - @PKGVERSION@-@PKGRELEASE@
+- New major release
+
+
+

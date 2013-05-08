@@ -109,5 +109,5 @@ install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/glite/jdl/
         PATTERN "CMakeFiles" EXCLUDE)
 
 install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/html
-        DESTINATION usr/share/doc/${CMAKE_PROJECT_NAME})
+        DESTINATION usr/share/doc/glite-jdl-api-cpp)
 

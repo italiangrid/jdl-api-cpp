@@ -53,6 +53,8 @@ add_library(glite_jdl_api_cpp SHARED JDLAttributes.cpp
                                      convert.cpp
                                      grammar.cpp)
 
+set_target_properties(glite_jdl_api_cpp PROPERTIES VERSION 0.0.0 SOVERSION 0)
+
 link_directories(${GLITE_WMSUTILS_EXCEPTION_LIBRARY_DIRS}
                  ${GLITE_WMSUTILS_CLASSADS_LIBRARY_DIRS}
                  ${GLITE_JOBID_LIBRARY_DIRS}
@@ -60,7 +62,7 @@ link_directories(${GLITE_WMSUTILS_EXCEPTION_LIBRARY_DIRS}
                  ${Boost_INCLUDE_DIRS})
 
 install(TARGETS glite_jdl_api_cpp
-        LIBRARY DESTINATION usr/lib)
+        LIBRARY DESTINATION usr/${LIBSUBDIR})
 
 
 add_subdirectory(pkgconfig)

@@ -22,7 +22,7 @@ cmake_minimum_required(VERSION 2.6)
 
 set(PKGNAME glite-jdl-api-cpp)
 set(PKGVER 3.4.2)
-set(PKGREL 1)
+set(PKGREL 2)
 
 set(ENV{PKG_CONFIG_PATH}
 "${CMAKE_INSTALL_PREFIX}/usr/lib/pkgconfig/:${CMAKE_INSTALL_PREFIX}/usr/lib64/pkgconfig/:$ENV{PKG_CONFIG_PATH}")

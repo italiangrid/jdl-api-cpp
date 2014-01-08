@@ -988,10 +988,10 @@ GLITE_STACK_TRY("JobAd::checkJobType( const vector<string>& attr_value   )");
          // to the requirements expression required for use case 2.2 MPIWG
           std::string const buffer(
             "( " + getAttributeExpr (JDL::REQUIREMENTS) + " )"
-            + " && other.GlueHostArchitectureSMPSize >= " 
-            + JDL::CPUNUMBER + " % " + JDL::HOSTNUMBER + " ? "
+            + " && other.GlueHostArchitectureSMPSize >= ((" 
+            + JDL::CPUNUMBER + " % " + JDL::HOSTNUMBER + " > 0) ? ("
             + " 1 + " + JDL::CPUNUMBER + " / " + JDL::HOSTNUMBER 
-            + " : " + JDL::CPUNUMBER + " / " + JDL::HOSTNUMBER
+            + ") : (" + JDL::CPUNUMBER + " / " + JDL::HOSTNUMBER + "))"
           );
           Delete ( JDL::REQUIREMENTS);
           setAttributeExpr (JDL::REQUIREMENTS , buffer);

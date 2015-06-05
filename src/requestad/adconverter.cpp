@@ -104,15 +104,18 @@ void list2nodes (ClassAd &nodes, std::vector<ExprTree*> list){
 		}
 		// Build the node with its mandatory attributes (description, node_type, nodeName)
 		ClassAd nod ;
-		nod.Insert (DAGAd::Attributes::DESCRIPTION_AD , node->Copy());
+		ExprTree* tmp_node = node->Copy();
+		nod.Insert (DAGAd::Attributes::DESCRIPTION_AD , tmp_node);
 		val.SetStringValue(AdConverter::SIMPLE_NODE_TYPE);
-		nod.Insert (DAGAd::Attributes::NODE_TYPE , Literal::MakeLiteral (val)) ;
+		ExprTree* tmp_lit = Literal::MakeLiteral(val);
+		nod.Insert (DAGAd::Attributes::NODE_TYPE , tmp_lit) ;
 		if (nodes.Lookup(nodeName)){
 			// The NodeName already exists
 			throw AdEmptyException (__FILE__, __LINE__, METHOD,
 				WMS_JDLFULL,"Duplicated " + JDL::NODE_NAME +"("+nodeName+ ")");
 		}
-		nodes.Insert (nodeName, nod.Copy() ) ;
+		ExprTree* tmp_expr = nod.Copy();
+		nodes.Insert (nodeName, tmp_expr ) ;
 	}
 	// Final Checks:
 	if (!nodes.size()){
@@ -435,8 +438,10 @@ ExpDagAd* AdConverter::createDAGTemplate ( NodeStruct dependencies , const std::
 	// Create a node to be copied n times (one for each node)
 	ClassAd node = *ad.ad();
 	val.SetStringValue ( SIMPLE_NODE_TYPE  ) ;
-	node.Insert ( DAGAd::Attributes::NODE_TYPE , Literal::MakeLiteral (val)  ) ;
-	node.Insert ( DAGAd::Attributes::DESCRIPTION_AD ,  (ad.ad())->Copy() );
+	ExprTree* tmp_lit = Literal::MakeLiteral(val);
+	node.Insert ( DAGAd::Attributes::NODE_TYPE , tmp_lit ) ;
+	ExprTree* tmp_expr =(ad.ad())->Copy();
+	node.Insert ( DAGAd::Attributes::DESCRIPTION_AD , tmp_expr );
 
 	DAGAd *p_dag = new DAGAd( ) ;
 	if (!dependencies.childrenNodes.size()){
@@ -480,7 +485,8 @@ CollectionAd* AdConverter::createCollectionTemplate ( unsigned int jobNumber ,co
 		// Inserting Node Name
 		ClassAd * ad = jobad.ad();
 		val.SetStringValue (AdConverter::NODE+boost::lexical_cast<std::string>(i));
-		ad->Insert(JDL::NODE_NAME, Literal::MakeLiteral (val));
+		ExprTree* tmp_expr = Literal::MakeLiteral(val);
+		ad->Insert(JDL::NODE_NAME, tmp_expr);
 		list->push_back (ad);
 	}
 	return createCollection (list ,vo ) ;
@@ -511,9 +517,12 @@ ExprList* loadAdsFromPath ( const std::string &path ){
 			// Inserting NodeName (if necessary):
 			if (!jobad.hasAttribute(JDL::NODE_NAME)){
 				// fs::path cp(pglob->gl_pathv[i], fs::system_specific);  // boost 1.29
-				fs::path cp(pglob->gl_pathv[i], fs::native);  // upgrade to boost 1.32
-
-				jobad.setAttribute(JDL::NODE_NAME, checkNodeName(AdConverter::NODE + cp.leaf()));
+#ifdef NEWBOOSTFS
+				string tmps = fs::path(pglob->gl_pathv[i]).filename().native();
+#else
+				string tmps = fs::path(pglob->gl_pathv[i], fs::native).leaf(); // upgrade to boost 1.32
+#endif
+				jobad.setAttribute(JDL::NODE_NAME, checkNodeName(AdConverter::NODE + tmps));
 			}
 			list->push_back ( jobad.ad()  ) ;
 		}catch (glite::wmsutils::classads::CannotParseClassAd  &exc) {
@@ -549,7 +558,8 @@ Ad* AdConverter::createDagAdFromPath (const std::string &path, const std::string
 	// Create the dag NODES attribute from the list of classads:
 	list2nodes(nodes,exprTreeVect);
 	// Insert Empty Dependencies (exception thrown otherwise)
-	nodes.Insert ( DAGAd::Attributes::DEPENDENCIES , new ExprList () ) ;
+	ExprTree* tmp_expr = new ExprList ();
+	nodes.Insert ( DAGAd::Attributes::DEPENDENCIES , tmp_expr ) ;
 	// Create an Ad instance which represents the dag
 	Ad *dagad = new Ad();
 	dagad->setAttributeExpr(DAGAd::Attributes::NODES, nodes.Copy());
@@ -699,8 +709,12 @@ void splitIsbAttribute(Ad *adParametric, Ad *adStatic, Ad *adPathametric){
 			}
 		}else{
 			// Parameter found, can be of different kind:
-			if (parametricISBbaseUri ||
-			fs::path(*values_it, fs::native).leaf().find(AdConverter::VALUE)==string::npos){
+#ifdef NEWBOOSTFS
+			string tmps = fs::path(*values_it).filename().native();
+#else
+			string tmps = fs::path(*values_it, fs::native).leaf();
+#endif
+			if (parametricISBbaseUri || tmps.find(AdConverter::VALUE)==string::npos){
 				// Paramaeter NOT found inside LEAF
 				// files with same name but dynamic path: pathametric will contain it
 				if (listv){adPathametric->addAttribute(attr_name, *values_it);}
@@ -936,7 +950,10 @@ ExpDagAd* AdConverter::bulk2dag (Ad* adOriginal, unsigned int maxCycles_i){
 		// put back ALL created ISB expressions:
 		// (only when needed)
 		if ( nodeList->size() ){
-			node->Insert(JDL::INPUTSB, nodeList);
+			ExprTree* tmp_expr_c = dynamic_cast<ExprTree*>(nodeList);
+			if (tmp_expr_c){
+				node->Insert(JDL::INPUTSB, tmp_expr_c);
+			}
 		}
 		// First Step approach
 		if ( i==start ){
@@ -955,7 +972,8 @@ ExpDagAd* AdConverter::bulk2dag (Ad* adOriginal, unsigned int maxCycles_i){
 		nodescription->Insert(DAGAd::Attributes::DESCRIPTION_AD,node);
 		// node type (mandatory)
 		val.SetStringValue(SIMPLE_NODE_TYPE);
-		nodescription->Insert(DAGAd::Attributes::NODE_TYPE,Literal::MakeLiteral(val));
+		ExprTree* tmp_expr = Literal::MakeLiteral(val);
+		nodescription->Insert(DAGAd::Attributes::NODE_TYPE, tmp_expr);
 		if ( nodes.Lookup(NODE + iters[i]) == NULL ) {
 			nodes.Insert(checkNodeName(NODE + iters[i]),nodescription);
 		} else {
@@ -973,7 +991,8 @@ ExpDagAd* AdConverter::bulk2dag (Ad* adOriginal, unsigned int maxCycles_i){
 	// now create the dagad and return
 	// *******************************
 	// Set Empty Dependencies
-	nodes.Insert (DAGAd::Attributes::DEPENDENCIES, new ExprList());
+	ExprTree* tmp_expr = new ExprList();
+	nodes.Insert (DAGAd::Attributes::DEPENDENCIES, tmp_expr);
 	// Set created nodes
 	adStatic.setAttributeExpr(DAGAd::Attributes::NODES, nodes.Copy());
 	// Set Type
@@ -1027,7 +1046,8 @@ ExpDagAd* AdConverter::collection2dag ( Ad *adOriginal ){
 			WMS_JDLMISMATCH,"ClassAd::EvaluateExpr",DAGAd::Attributes::NODES);
 	}
 	// Create the proper dagad and return
-	nodes.Insert ( DAGAd::Attributes::DEPENDENCIES , new ExprList () ) ;
+	ExprTree* tmp_expr = new ExprList ();
+	nodes.Insert ( DAGAd::Attributes::DEPENDENCIES , tmp_expr ) ;
 	dagad->setAttributeExpr ( DAGAd::Attributes::NODES   ,   nodes.Copy() ) ;
 	// Replace "collection" type with "dag" type
 	dagad->delAttribute(JDL::TYPE) ;

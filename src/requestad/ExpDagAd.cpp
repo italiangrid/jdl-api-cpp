@@ -948,7 +948,8 @@ std::vector<std::string> ExpDagAd::getSubmissionStrings (vector<string> *jobids)
 				if ( isbTree!=NULL ){
 					if (isbTree->Evaluate(val)){
 						if (!val.IsUndefinedValue()){
-							classAd->Insert (JDL::INPUTSB, EvaluateValue(val,true?new ExprList():NULL));
+							classad::ExprTree* tmp_expr = EvaluateValue(val,true?new ExprList():NULL);
+							classAd->Insert (JDL::INPUTSB, tmp_expr);
 						} else{
 							// TBD could be remote reference, do SOMETHING
 						}
@@ -1214,7 +1215,8 @@ void ExpDagAd::setNodeAttribute ( const std::string &node , const std::string &a
 			classad::Value v;
 			v.Clear ();
 			v.SetStringValue(attr_value);
-			cadCopy->Insert(attr_name,classad::Literal::MakeLiteral(v));
+			classad:ExprTree* tmp_expr = classad::Literal::MakeLiteral(v);
+			cadCopy->Insert(attr_name, tmp_expr);
 			DAGNodeInfo replacing_node (*cadCopy,"edg_jdl") ;
 			dagad->replace_node (iter->first , replacing_node ) ;
 			break;
@@ -1571,7 +1573,8 @@ std::vector<DAGAd::node_iterator> ExpDagAd::orderNodes(){
 				// TBD check when evaluate is half successful:
 				// note evaluated expression forgotten?
 				isb=replaceExprvalue(isb, JDL::OUTPUTSB, JDL::OSB_DEST_URI); // output of replace directly inside Insert
-				classAd->Insert (JDL::INPUTSB, isb->Copy()); //TBD Copy needed?
+				ExprTree* tmp_expr = isb->Copy(); //TBD Copy needed?
+				classAd->Insert (JDL::INPUTSB, tmp_expr);
 				// Replacing the node:
 				DAGNodeInfo replacing_node (*classAd,"edg_jdl")  ;
 				replacing_node.replace_description_ad( classAd ) ;

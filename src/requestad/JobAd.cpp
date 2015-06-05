@@ -142,7 +142,8 @@ void JobAd::fromClassAd(const classad::ClassAd& classAd){
 	vectorPairStrExpr::iterator const end = vect.end();
 	for ( ; it != end; ++it) {
 		insertAttribute (  it->first , it->second->Copy()  );
-		user.Insert(it->first, it->second->Copy() ) ;
+		classad:ExprTree* tmp_expr = it->second->Copy();
+		user.Insert(it->first, tmp_expr ) ;
 	}
 }
 /******************************************************************
@@ -195,7 +196,8 @@ void JobAd::insertAttribute(const std::string& attr_name ,ExprTree* tree){
 	}
 	// fill the attribute in the user's classAd (if necessary)
 	if (  jdlist.findCheck(attr_name)   && !checking   ){
-		user.Insert (attr_name  , tree->Copy()) ;
+		ExprTree* tmp_expr = tree->Copy();
+		user.Insert (attr_name  , tmp_expr) ;
 	}
 }
 void JobAd::setLocalAccess(bool lookInto){
@@ -523,7 +525,11 @@ void JobAd::checkSemantic() {
 			vectorStr::iterator it = extracted.begin();
 			vectorStr::iterator const end = extracted.end();
 			for ( ; it != end; ++it) {
+#ifdef NEWBOOSTFS
+				addAttribute(JDL::ISB_DEST_FILENAME, fs::path(*it).filename().native());
+#else
 				addAttribute(JDL::ISB_DEST_FILENAME, fs::path(*it, fs::native).leaf());  // upgrade to boost 1.32
+#endif
 			}
 		}
 	}

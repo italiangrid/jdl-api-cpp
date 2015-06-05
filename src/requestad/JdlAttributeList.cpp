@@ -308,8 +308,12 @@ bool JdlAttributeList::findTail(const string& value, vector<string> lis) const {
 	string file = "";
 	for (it = lis.begin(); it!=lis.end(); ++it) {
 		// fs::path cp(*it, fs::system_specific);  boost 1.29
+#ifdef NEWBOOSTFS
+		file = fs::path(*it).filename().native();
+#else
 		fs::path cp(*it, fs::native);  // upgrade to boost 1.32
 		file = cp.leaf();
+#endif
 		if (file == value) { return true; }
 	}
 	return false;

@@ -4564,7 +4564,8 @@ void set_edg_previous_matches_ex(
 
   }
 
-  ad.Insert("edg_previous_matches_ex", classad::ExprList::MakeExprList(expr_list));
+  classad::ExprTree* tmp_expr = classad::ExprList::MakeExprList(expr_list);
+  ad.Insert("edg_previous_matches_ex", tmp_expr);
 }
 
 } // namespace jdl

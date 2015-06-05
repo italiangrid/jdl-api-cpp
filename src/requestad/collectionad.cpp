@@ -74,7 +74,8 @@ namespace jdl {
 		extractedAd=collect.extractedAd;
 		warning_messages_v = collect.warning_messages_v;
 		for(; it!=end;++it){
-			Insert (it->first,it->second->Copy());
+			ExprTree* tmp_expr = it->second->Copy();
+			Insert (it->first, tmp_expr);
 		}
 		GLITE_STACK_JDL_CATCH_ALL() ; //Exiting from method: remove line from stack trace
 	}
@@ -133,7 +134,8 @@ namespace jdl {
 			if (isb->Evaluate(val)){
 				if (!val.IsUndefinedValue()){
 					// Replacing the node:
-					nodead->Insert (attr_name, EvaluateNode(val,flatten?new ExprList():NULL));
+					ExprTree* tmp_expr = EvaluateNode(val,flatten?new ExprList():NULL);
+					nodead->Insert (attr_name, tmp_expr);
 				}
 			}
 		}
@@ -253,7 +255,11 @@ namespace jdl {
 			
 				toBretrieved=extractFiles(JDL::INPUTSB,*it,fakeextracted,lookInto_b,wmpURI,isbURI)||toBretrieved;
 				isbfound_b=false ;
+#ifdef NEWBOOSTFS
+				leaf=fs::path(*it).filename().native();
+#else
 				leaf=fs::path(*it, fs::native).leaf();  // boost 1.32
+#endif
 				// Cycling over already found values:
 				for (unsigned int j=0; j<offset;j++){
 					if (*it == extracted[j]){
@@ -263,7 +269,11 @@ namespace jdl {
 							+boost::lexical_cast<std::string>(j)+"]", true));
 						isbfound_b=true;
 						break;
+#ifdef NEWBOOSTFS
+					}else if (fs::path(extracted[j]).filename().native() == leaf){
+#else
 					}else if (fs::path(extracted[j],fs::native).leaf() == leaf){
+#endif
 						// Path with same name cannot be stored in the same ISB
 						// No reference will be applied, pure string used
 						isbfound_b=true;
@@ -597,7 +607,10 @@ namespace jdl {
 			// collection is still empty: fill first node
 			el = new ExprList();
 			el->push_back(node.ad());
-			Insert (DAGAd::Attributes::NODES,el);
+			ExprTree* tmp_expr = dynamic_cast<ExprTree*>(el);
+			if (tmp_expr){
+				Insert (DAGAd::Attributes::NODES, tmp_expr);
+			}
 		}else if  (collection_nodes->Evaluate ( val ) ){
 			if (val.IsListValue (el)){
 				// It is a list: append new Node

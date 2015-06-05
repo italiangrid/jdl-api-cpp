@@ -48,7 +48,8 @@ ParametricAd::~ParametricAd() throw(){}
 void ParametricAd::insertAttribute(const std::string& attr_name ,ExprTree* tree){
 	if (    glite_wms_jdl_toLower (attr_name)== glite_wms_jdl_toLower(JDL::INPUTSB)  ){
 		Insert (attr_name  , tree)  ;
-		user.Insert (attr_name  , tree->Copy()) ;
+		ExprTree* tmp_expr = tree->Copy();
+		user.Insert (attr_name  , tmp_expr) ;
 	} else  JobAd::insertAttribute(attr_name ,tree);
 }
 void ParametricAd::addUserTag ( const std::string& attr_name,  const std::string& attr_value){
@@ -57,7 +58,8 @@ void ParametricAd::addUserTag ( const std::string& attr_name,  const std::string
 		// UserTags attribute has still to be created
 		ClassAd ad ;
 		ad.InsertAttr ( attr_name , attr_value ) ;
-		Insert ( JDL::USERTAGS  , ad.Copy() ) ;
+		ExprTree* tmp_expr = ad.Copy();
+		Insert ( JDL::USERTAGS  , tmp_expr ) ;
 	}else{
 		// Already Existing UserTags attribute
 		if (  tree->GetKind () == classad::ExprTree::CLASSAD_NODE  )
@@ -215,7 +217,8 @@ void ParametricAd::checkInputSandbox(std::vector<std::string>& extracted){
 			throw AdMismatchException (__FILE__ , __LINE__ ,METHOD, WMS_JDLMISMATCH , JDL::INPUTSB );
 			break;
 	}
-	Insert (JDL::INPUTSB , ExprList::MakeExprList(isVect)) ;
+	classad:ExprTree* tmp_expr = ExprList::MakeExprList(isVect);
+	Insert (JDL::INPUTSB , tmp_expr) ;
 	GLITE_STACK_JDL_CATCH_ALL() ; //Exiting from method: remove line from stack trace
 }
 } // jdl namespace

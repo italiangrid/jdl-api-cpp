@@ -4993,7 +4993,8 @@ std::string unparse_mw_version( const classad::ClassAd &job_ad, bool &good )
 
 void set_output_data( classad::ClassAd &job_ad, const classad::ExprTree *value )
 {
-  bool res = job_ad.Insert( JDL::OUTPUTDATA, value->Copy() );
+  classad::ExprTree* tmp_expr = value->Copy();
+  bool res = job_ad.Insert( JDL::OUTPUTDATA, tmp_expr );
   if( !res ) throw CannotSetAttribute( JDL::OUTPUTDATA );
   return;
 }
@@ -5027,7 +5028,8 @@ std::string unparse_output_data( const classad::ClassAd &job_ad )
 
 void set_output_data( classad::ClassAd &job_ad, const classad::ExprTree *value, bool &good )
 {
-  good = job_ad.Insert( JDL::OUTPUTDATA, value->Copy() );
+  classad::ExprTree* tmp_expr = value->Copy();
+  good = job_ad.Insert( JDL::OUTPUTDATA, tmp_expr );
   return;
 }
 
@@ -5056,7 +5058,8 @@ std::string unparse_output_data( const classad::ClassAd &job_ad, bool &good )
 
 void set_user_tags( classad::ClassAd &job_ad, const classad::ExprTree *value )
 {
-  bool res = job_ad.Insert( JDL::USERTAGS, value->Copy() );
+  classad::ExprTree* tmp_expr = value->Copy();
+  bool res = job_ad.Insert( JDL::USERTAGS, tmp_expr );
   if( !res ) throw CannotSetAttribute( JDL::USERTAGS );
   return;
 }
@@ -5090,7 +5093,8 @@ std::string unparse_user_tags( const classad::ClassAd &job_ad )
 
 void set_user_tags( classad::ClassAd &job_ad, const classad::ExprTree *value, bool &good )
 {
-  good = job_ad.Insert( JDL::USERTAGS, value->Copy() );
+  classad::ExprTree* tmp_expr = value->Copy();
+  good = job_ad.Insert( JDL::USERTAGS, tmp_expr );
   return;
 }
 
@@ -5119,7 +5123,8 @@ std::string unparse_user_tags( const classad::ClassAd &job_ad, bool &good )
 
 void set_data_requirements( classad::ClassAd &job_ad, const classad::ExprTree *value )
 {
-  bool res = job_ad.Insert( JDL::DATA_REQUIREMENTS, value->Copy() );
+  classad::ExprTree* tmp_expr = value->Copy();
+  bool res = job_ad.Insert( JDL::DATA_REQUIREMENTS, tmp_expr );
   if( !res ) throw CannotSetAttribute( JDL::DATA_REQUIREMENTS );
   return;
 }
@@ -5153,7 +5158,8 @@ std::string unparse_data_requirements( const classad::ClassAd &job_ad )
 
 void set_data_requirements( classad::ClassAd &job_ad, const classad::ExprTree *value, bool &good )
 {
-  good = job_ad.Insert( JDL::DATA_REQUIREMENTS, value->Copy() );
+  classad::ExprTree* tmp_expr = value->Copy();
+  good = job_ad.Insert( JDL::DATA_REQUIREMENTS, tmp_expr );
   return;
 }
 
@@ -5892,7 +5898,8 @@ std::string unparse_step_weight( const classad::ClassAd &job_ad, bool &good )
 
 void set_prejob( classad::ClassAd &job_ad, const classad::ClassAd *value )
 {
-  bool res = job_ad.Insert( JDL::PREJOB, value->Copy() );
+  classad::ExprTree* tmp_expr = value->Copy();
+  bool res = job_ad.Insert( JDL::PREJOB, tmp_expr );
   if( !res ) throw CannotSetAttribute( JDL::PREJOB );
   return;
 }
@@ -5928,7 +5935,8 @@ std::string unparse_prejob( const classad::ClassAd &job_ad )
 
 void set_prejob( classad::ClassAd &job_ad, const classad::ClassAd *value, bool &good )
 {
-  good = job_ad.Insert( JDL::PREJOB, value->Copy() );
+  classad::ExprTree* tmp_expr = value->Copy();
+  good = job_ad.Insert( JDL::PREJOB, tmp_expr );
   return;
 }
 
@@ -5957,7 +5965,8 @@ std::string unparse_prejob( const classad::ClassAd &job_ad, bool &good )
 
 void set_postjob( classad::ClassAd &job_ad, const classad::ClassAd *value )
 {
-  bool res = job_ad.Insert( JDL::POSTJOB, value->Copy() );
+  classad::ExprTree* tmp_expr = value->Copy();
+  bool res = job_ad.Insert( JDL::POSTJOB, tmp_expr );
   if( !res ) throw CannotSetAttribute( JDL::POSTJOB );
   return;
 }
@@ -5993,7 +6002,8 @@ std::string unparse_postjob( const classad::ClassAd &job_ad )
 
 void set_postjob( classad::ClassAd &job_ad, const classad::ClassAd *value, bool &good )
 {
-  good = job_ad.Insert( JDL::POSTJOB, value->Copy() );
+  classad::ExprTree* tmp_expr = value->Copy();
+  good = job_ad.Insert( JDL::POSTJOB, tmp_expr );
   return;
 }
 
@@ -6022,7 +6032,8 @@ std::string unparse_postjob( const classad::ClassAd &job_ad, bool &good )
 
 void set_job_state( classad::ClassAd &job_ad, const classad::ClassAd *value )
 {
-  bool res = job_ad.Insert( JDL::CHKPT_JOBSTATE, value->Copy() );
+  classad::ExprTree* tmp_expr = value->Copy();
+  bool res = job_ad.Insert( JDL::CHKPT_JOBSTATE, tmp_expr );
   if( !res ) throw CannotSetAttribute( JDL::CHKPT_JOBSTATE );
   return;
 }
@@ -6058,7 +6069,8 @@ std::string unparse_job_state( const classad::ClassAd &job_ad )
 
 void set_job_state( classad::ClassAd &job_ad, const classad::ClassAd *value, bool &good )
 {
-  good = job_ad.Insert( JDL::CHKPT_JOBSTATE, value->Copy() );
+  classad::ExprTree* tmp_expr = value->Copy();
+  good = job_ad.Insert( JDL::CHKPT_JOBSTATE, tmp_expr );
   return;
 }
 

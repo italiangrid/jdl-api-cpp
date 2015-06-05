@@ -585,7 +585,8 @@ public:
     if (!m_description_file.empty()) {
       result.InsertAttr(DAGAd::Attributes::DESCRIPTION_FILE, m_description_file);
     } else if (m_description_ad) {
-      result.Insert(DAGAd::Attributes::DESCRIPTION_AD, m_description_ad->Copy()) ;
+      classad::ExprTree* tmp_expr = m_description_ad->Copy();
+      result.Insert(DAGAd::Attributes::DESCRIPTION_AD, tmp_expr) ;
     } else {
       //  assert(false);
     }
@@ -979,8 +980,10 @@ DAGAd::DAGAd()
   m_ad->InsertAttr(Attributes::TYPE, std::string("dag"));
   std::auto_ptr<classad::ClassAd> nodes(new classad::ClassAd);
   std::auto_ptr<classad::ExprList> dependencies(new classad::ExprList);
-  nodes->Insert(Attributes::DEPENDENCIES, dependencies.release());
-  m_ad->Insert(Attributes::NODES, nodes.release());  
+  classad::ExprTree* tmpd_expr = dependencies.release();
+  nodes->Insert(Attributes::DEPENDENCIES, tmpd_expr);
+  classad::ExprTree* tmp_expr = nodes.release();
+  m_ad->Insert(Attributes::NODES, tmp_expr);  
 }
 
 DAGAd::DAGAd(classad::ClassAd const& ad)
@@ -1142,9 +1145,10 @@ DAGAd::add_node(std::string const& name, DAGNodeInfo const& info)
   std::auto_ptr<classad::ClassAd> info_tmp(new ClassAd(info.as_classad()));
   info_tmp->SetParentScope(nodes);
 
+  classad::ExprTree* tmp_expr = info_tmp.release();
   bool success = is_valid_node(*info_tmp)
     && !nodes->Lookup(name)
-    && nodes->Insert(name, info_tmp.release());
+    && nodes->Insert(name, tmp_expr);
   
   //add node in the graph structure
   if (success) {
@@ -1163,9 +1167,10 @@ DAGAd::replace_node(std::string const& name, DAGNodeInfo const& info)
   std::auto_ptr<classad::ClassAd> info_tmp(new ClassAd(info.as_classad()));
   info_tmp->SetParentScope(nodes);
 
+  classad::ExprTree* tmp_expr = info_tmp.release();
   return is_valid_node(*info_tmp)
     && nodes->Lookup(name)
-    && nodes->Insert(name, info_tmp.release());
+    && nodes->Insert(name, tmp_expr);
 }
 
 namespace {

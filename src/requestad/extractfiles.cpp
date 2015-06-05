@@ -79,14 +79,25 @@ bool addPath (const string& path ,vector<string> &extracted){
 	// simple paths must have different names unless remote protocol has been specified
 	vector<string>::iterator iter ;
 	// string simplePath= fs::path(path, fs::system_specific).leaf();  // boost 1.29
+#ifdef NEWBOOSTFS
+	string simplePath= fs::path(path).filename().native();
+#else
 	string simplePath= fs::path(path, fs::native).leaf();  // upgrade to boost 1.32
+#endif
+
 	// TBD a map with all simple files can be used
 	for ( iter=extracted.begin() ; iter != extracted.end() ; ++iter ) {
 		// Compare simple names: (files will be stored in the same directory)
 				// fs::path cp(*iter, fs::system_specific);  boost 1.29
+#ifdef NEWBOOSTFS
+		if ( simplePath == fs::path(*iter).filename().native() ){
+                        return true;
+                }
+#else
 		if ( simplePath == fs::path(*iter, fs::native).leaf() ){ // upgrade to boost 1.32
 			return true;
 		}
+#endif
 	}
 	extracted.push_back(path);
 	return false;
@@ -287,8 +298,13 @@ bool extractFiles(const string& attr_name,
     // else leave already protocolled path unchanged
     // Try and Add the path
     if (  addPath(mpath, extracted)  ){
+#ifdef NEWBOOSTFS
+      string tmps = fs::path(mpath).filename().native();
+#else
+      string tmps = fs::path(mpath, fs::native).leaf();
+#endif
       throw AdSemanticPathException (__FILE__,__LINE__,METHOD,
-				     WMS_JDLDUPLICATE,attr_name,fs::path(mpath, fs::native).leaf());
+				     WMS_JDLDUPLICATE,attr_name,tmps);
     }
     // Wildcards are NOT allowed
     if (hasWildCards(mpath)){
@@ -327,9 +343,14 @@ bool extractFiles(const string& attr_name,
     }else if (lookInto_b==EXISTENCE){  // following files are not local
       // Try and add the path
       if (addPath (mpath, extracted)){
+#ifdef NEWBOOSTFS
+	string tmps = fs::path(mpath).filename().native();
+#else
+	string tmps = fs::path(mpath, fs::native).leaf()
+#endif
 	throw AdSemanticPathException (__FILE__,__LINE__,METHOD,
 				       WMS_JDLDUPLICATE,attr_name,
-				       fs::path(mpath, fs::native).leaf());
+				       tmps);
       }
       // wildcards are not allowed
       if (hasWildCards(mpath)){

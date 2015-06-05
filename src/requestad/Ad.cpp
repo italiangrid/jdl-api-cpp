@@ -72,7 +72,8 @@ Ad::Ad(const Ad& ad) {
 	vectorPairStrExpr::iterator it = vec.begin();
 	vectorPairStrExpr::iterator const end = vec.end();
 	for ( ; it != end; ++it) {
-		Insert (it->first, it->second->Copy());
+		classad:ExprTree* tmp_expr = it->second->Copy();
+		Insert (it->first, tmp_expr);
 	}
 }
 void Ad::operator=(const Ad& ad){
@@ -82,7 +83,8 @@ void Ad::operator=(const Ad& ad){
 	vectorPairStrExpr::iterator it = vec.begin();
 	vectorPairStrExpr::iterator const end = vec.end();
 	for ( ; it != end; ++it) {
-		Insert (it->first, it->second->Copy());
+		classad:ExprTree* tmp_expr = it->second->Copy();
+		Insert (it->first, tmp_expr);
 	}
 }
 /******************************************************************

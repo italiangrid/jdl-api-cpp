@@ -24,11 +24,15 @@ include_directories(${CLASSAD_INCLUDE_DIRS}
                     ${Boost_INCLUDE_DIRS}
                     ${PROJECT_SOURCE_DIR}/interface/glite/jdl)
 
-add_definitions( -pipe -DWANT_NAMESPACES -DWANT_CLASSAD_NAMESPACE -std=c++11 )
+add_definitions( -pipe -DWANT_NAMESPACES -DWANT_CLASSAD_NAMESPACE )
 
 if( NOT Boost_VERSION VERSION_LESS "1.48.0" )
-    add_definitions( -DNEWBOOSTFS )
+    add_definitions( -DNEWBOOSTFS -std=c++11 )
 endif( NOT Boost_VERSION VERSION_LESS "1.48.0" )
+
+if( NOT Boost_VERSION VERSION_LESS "1.53.0" )
+    add_definitions( -DNEWBOOSTSPIRIT )
+endif( NOT Boost_VERSION VERSION_LESS "1.53.0" )
  
 link_directories(${GLITE_WMSUTILS_EXCEPTION_LIBRARY_DIRS}
                  ${GLITE_WMSUTILS_CLASSADS_LIBRARY_DIRS}

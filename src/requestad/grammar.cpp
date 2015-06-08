@@ -39,11 +39,20 @@ limitations under the License.
 #endif
 
 #include <boost/scoped_ptr.hpp>
+#ifdef NEWBOOSTSPIRIT
+#define BOOST_SPIRIT_USE_OLD_NAMESPACE
+#include <boost/spirit/home/classic/core.hpp>
+#include <boost/spirit/home/classic/attribute.hpp>
+#include <boost/spirit/home/classic/actor/push_back_actor.hpp>
+#include <boost/spirit/home/classic/error_handling/exceptions.hpp>
+#include <boost/spirit/home/classic/utility/confix.hpp>
+#else
 #include <boost/spirit/core.hpp>
 #include <boost/spirit/attribute.hpp>
 #include <boost/spirit/actor/push_back_actor.hpp>
 #include <boost/spirit/error_handling/exceptions.hpp>
 #include <boost/spirit/utility/confix.hpp>
+#endif
 
 using namespace std;
 using namespace boost::spirit;

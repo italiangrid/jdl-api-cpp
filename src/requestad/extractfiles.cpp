@@ -346,7 +346,7 @@ bool extractFiles(const string& attr_name,
 #ifdef NEWBOOSTFS
 	string tmps = fs::path(mpath).filename().native();
 #else
-	string tmps = fs::path(mpath, fs::native).leaf()
+	string tmps = fs::path(mpath, fs::native).leaf();
 #endif
 	throw AdSemanticPathException (__FILE__,__LINE__,METHOD,
 				       WMS_JDLDUPLICATE,attr_name,

@@ -17,29 +17,23 @@
 #  limitations under the License.
 #  
 
-include_directories(${CLASSAD_INCLUDE_DIRS}
+include_directories(${ClassAd_INCLUDE_DIR}
                     ${GLITE_WMSUTILS_EXCEPTION_INCLUDE_DIRS}
                     ${GLITE_WMSUTILS_CLASSADS_INCLUDE_DIRS}
-                    ${GLITE_JOBID_INCLUDE_DIRS}
+                    ${GLite_JOBID_INCLUDE_DIRS}
                     ${Boost_INCLUDE_DIRS}
                     ${PROJECT_SOURCE_DIR}/interface/glite/jdl)
 
-add_definitions( -pipe -DWANT_NAMESPACES -DWANT_CLASSAD_NAMESPACE )
+add_definitions( ${ClassAd_CXX_FLAGS} ${ClassAd_CPP_FLAGS} )
 
 if( NOT Boost_VERSION VERSION_LESS "1.48.0" )
-    add_definitions( -DNEWBOOSTFS -std=c++11 )
+    add_definitions( -DNEWBOOSTFS )
 endif( NOT Boost_VERSION VERSION_LESS "1.48.0" )
 
 if( NOT Boost_VERSION VERSION_LESS "1.53.0" )
     add_definitions( -DNEWBOOSTSPIRIT )
 endif( NOT Boost_VERSION VERSION_LESS "1.53.0" )
  
-link_directories(${GLITE_WMSUTILS_EXCEPTION_LIBRARY_DIRS}
-                 ${GLITE_WMSUTILS_CLASSADS_LIBRARY_DIRS}
-                 ${GLITE_JOBID_LIBRARY_DIRS}
-                 ${CLASSAD_INCLUDE_DIRS}
-                 ${Boost_INCLUDE_DIRS})
-
 add_library(glite_jdl_api_cpp SHARED JDLAttributes.cpp
                                      PrivateAttributes.cpp
                                      JobAdManipulation.cpp
@@ -64,10 +58,7 @@ add_library(glite_jdl_api_cpp SHARED JDLAttributes.cpp
 set_target_properties(glite_jdl_api_cpp PROPERTIES VERSION 0.0.0 SOVERSION 0)
 
 link_directories(${GLITE_WMSUTILS_EXCEPTION_LIBRARY_DIRS}
-                 ${GLITE_WMSUTILS_CLASSADS_LIBRARY_DIRS}
-                 ${GLITE_JOBID_LIBRARY_DIRS}
-                 ${CLASSAD_INCLUDE_DIRS}
-                 ${Boost_INCLUDE_DIRS})
+                 ${GLITE_WMSUTILS_CLASSADS_LIBRARY_DIRS})
 
 install(TARGETS glite_jdl_api_cpp
         LIBRARY DESTINATION usr/${LIBSUBDIR})

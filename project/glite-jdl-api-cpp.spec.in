@@ -7,7 +7,7 @@ Vendor: EMI
 URL: http://glite.cern.ch/
 Group: System Environment/Libraries
 BuildArch: %{_arch}
-BuildRequires: cmake, emi-pkgconfig-compat
+BuildRequires: cmake
 BuildRequires: glite-wms-utils-exception-devel, boost-devel
 BuildRequires: glite-wms-utils-classad-devel, classads-devel
 BuildRequires: glite-jobid-api-c-devel, doxygen
@@ -69,6 +69,7 @@ Development files for dealing with the Job Description Language
 /usr/include/glite/jdl/*.h
 %{_libdir}/pkgconfig/jdl-api-cpp.pc
 %{_libdir}/libglite_jdl_api_cpp.so
+/usr/share/cmake/Modules/Find*.cmake
 
 %package doc
 Summary: Documentation files for Job Description Language C/C++ library

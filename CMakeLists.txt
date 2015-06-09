@@ -19,6 +19,7 @@
 
 project(jdl-api-cpp CXX)
 cmake_minimum_required(VERSION 2.6)
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake_modules/")
 
 set(PKGNAME glite-jdl-api-cpp)
 set(PKGVER 3.4.3)
@@ -27,7 +28,7 @@ set(PKGREL 1)
 set(ENV{PKG_CONFIG_PATH}
 "${CMAKE_INSTALL_PREFIX}/usr/lib/pkgconfig/:${CMAKE_INSTALL_PREFIX}/usr/lib64/pkgconfig/:$ENV{PKG_CONFIG_PATH}")
 
-set(ITEMS_FOR_SOURCE CMakeLists.txt interface src)
+set(ITEMS_FOR_SOURCE CMakeLists.txt interface src cmake_modules)
 
 add_custom_target(rpm 
                   COMMAND mkdir -p ${CMAKE_CURRENT_BINARY_DIR}/rpmbuild/BUILD
@@ -45,4 +46,5 @@ add_custom_target(rpm
 
 add_subdirectory(src)
 add_subdirectory(interface)
+add_subdirectory(cmake_modules)
 

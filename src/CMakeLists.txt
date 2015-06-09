@@ -20,10 +20,13 @@
 set(CMAKE_CXX_FLAGS_DEBUG "-g -Wall")
 
 find_package(PkgConfig REQUIRED)
-pkg_check_modules(CLASSAD REQUIRED emi-classad-ns)
+#pkg_check_modules(CLASSAD REQUIRED emi-classad-ns)
 pkg_check_modules(GLITE_WMSUTILS_EXCEPTION REQUIRED jobman-exception)
 pkg_check_modules(GLITE_WMSUTILS_CLASSADS REQUIRED classad-utils)
-pkg_check_modules(GLITE_JOBID REQUIRED emi-jobid)
+#pkg_check_modules(GLITE_JOBID REQUIRED emi-jobid)
+
+find_package(GLiteClassAd REQUIRED)
+find_package(GLiteJobid REQUIRED)
 
 if( ${CMAKE_VERSION} VERSION_LESS "2.8.2" )
     if( IS_DIRECTORY "/usr/lib64" )

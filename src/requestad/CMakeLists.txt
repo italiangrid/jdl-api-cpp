@@ -26,14 +26,6 @@ include_directories(${ClassAd_INCLUDE_DIR}
 
 add_definitions( ${ClassAd_CXX_FLAGS} ${ClassAd_CPP_FLAGS} )
 
-if( NOT Boost_VERSION VERSION_LESS "1.48.0" )
-    add_definitions( -DNEWBOOSTFS )
-endif( NOT Boost_VERSION VERSION_LESS "1.48.0" )
-
-if( NOT Boost_VERSION VERSION_LESS "1.53.0" )
-    add_definitions( -DNEWBOOSTSPIRIT )
-endif( NOT Boost_VERSION VERSION_LESS "1.53.0" )
- 
 add_library(glite_jdl_api_cpp SHARED JDLAttributes.cpp
                                      PrivateAttributes.cpp
                                      JobAdManipulation.cpp

@@ -9,7 +9,7 @@ Group: System Environment/Libraries
 BuildArch: %{_arch}
 BuildRequires: cmake
 BuildRequires: glite-wms-utils-exception-devel, boost-devel
-BuildRequires: glite-wms-utils-classad-devel, classads-devel
+BuildRequires: glite-wms-utils-classad-devel
 BuildRequires: glite-jobid-api-c-devel, doxygen
 BuildRequires: glite-jobid-api-cpp-devel, pkgconfig
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -56,7 +56,7 @@ Summary: C/C++ libraries handling Job Description Language (development files)
 Group: System Environment/Libraries
 Requires: glite-jobid-api-c-devel, glite-jobid-api-cpp-devel
 Requires: glite-wms-utils-classad-devel, glite-wms-utils-exception-devel
-Requires: boost-devel, classads-devel
+Requires: boost-devel
 Requires: %{name}%{?_isa} = %{version}-%{release}
 
 %description devel

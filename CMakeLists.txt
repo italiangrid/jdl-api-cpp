@@ -22,7 +22,7 @@ cmake_minimum_required(VERSION 2.6)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake_modules/")
 
 set(PKGNAME glite-jdl-api-cpp)
-set(PKGVER 3.4.3)
+set(PKGVER 3.4.4)
 set(PKGREL 1)
 
 set(ENV{PKG_CONFIG_PATH}
